@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mohammadreza Hajibabaei</title>
+<meta name="description" content="M.Sc. student at Sharif University of Technology — Edge AI, DNN partitioning, efficient deep learning inference."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ═══ VARIABLES ═══ */
+:root{
+  --bg:#f0f6ff;--bg-card:#ffffff;--bg-tag:#ddeeff;
+  --blue-soft:#c8dff8;--blue-mid:#5b9bd5;--blue-deep:#1a4a7a;
+  --blue-text:#0d3259;--muted:#5a7a99;--border:#ccddf0;
+  --accent:#3478c5;--nav-bg:rgba(240,246,255,0.88);
+  --avatar-ring:#5b9bd5;--shadow:rgba(52,120,197,0.13);
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',system-ui,sans-serif;
+  --scroll-color:#5b9bd5;
+}
+body.dark{
+  --bg:#0b1422;--bg-card:#121e30;--bg-tag:#162234;
+  --blue-soft:#1e3a5f;--blue-mid:#4a80b8;--blue-deep:#a8c8f0;
+  --blue-text:#c8dff8;--muted:#7a9abb;--border:#1e3050;
+  --accent:#5b9bd5;--nav-bg:rgba(11,20,34,0.92);
+  --avatar-ring:#4a80b8;--shadow:rgba(90,155,213,0.18);
+  --scroll-color:#4a80b8;
+}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar{width:7px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--scroll-color);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+html{scrollbar-color:var(--scroll-color) var(--bg);scrollbar-width:thin}
+
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--blue-text);
+  line-height:1.7;font-size:15px;min-height:100vh;
+  transition:background .3s,color .3s;overflow-x:hidden}
+
+/* ═══ PROGRESS BAR ═══ */
+#progress-bar{
+  position:fixed;top:0;left:0;height:3px;width:0%;
+  background:linear-gradient(90deg,var(--blue-mid),var(--accent));
+  z-index:9999;transition:width .08s linear;border-radius:0 2px 2px 0;
+}
+
+/* ═══ NAV ═══ */
+nav{
+  position:fixed;top:3px;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:56px;
+  background:var(--nav-bg);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  transition:background .3s,border-color .3s;
+}
+.theme-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:8px;
+  border:1px solid var(--border);background:transparent;
+  color:var(--muted);cursor:pointer;font-size:17px;
+  transition:all .2s;flex-shrink:0;
+}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--bg-card)}
+
+/* pill nav box */
+.nav-links-box{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:10px;padding:4px 6px;
+  transition:background .3s,border-color .3s;
+}
+.nav-links{display:flex;gap:.2rem;list-style:none}
+.nav-links a{
+  display:block;font-size:12.5px;font-family:var(--mono);
+  color:var(--muted);text-decoration:none;letter-spacing:.03em;
+  padding:5px 11px;border-radius:6px;transition:all .18s;
+}
+.nav-links a:hover,.nav-links a.active{
+  color:var(--accent);background:var(--bg);
+  font-weight:600;
+}
+
+/* hamburger */
+.hamburger{
+  display:none;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:8px;
+  border:1px solid var(--border);background:transparent;
+  color:var(--muted);cursor:pointer;font-size:20px;
+  transition:all .2s;flex-shrink:0;
+}
+.hamburger:hover{border-color:var(--accent);color:var(--accent)}
+
+/* mobile menu overlay */
+.mobile-menu{
+  display:none;position:fixed;inset:0;z-index:490;
+  background:rgba(0,0,0,.5);backdrop-filter:blur(4px);
+  opacity:0;transition:opacity .25s;
+}
+.mobile-menu.open{opacity:1}
+.mobile-menu-panel{
+  position:absolute;top:0;left:0;right:0;
+  background:var(--bg-card);border-bottom:1px solid var(--border);
+  padding:1.5rem 2rem 2rem;
+  transform:translateY(-100%);transition:transform .3s ease;
+}
+.mobile-menu.open .mobile-menu-panel{transform:translateY(0)}
+.mobile-menu-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:1.5rem;
+}
+.mobile-close{
+  background:none;border:1px solid var(--border);color:var(--muted);
+  font-size:20px;padding:4px 10px;border-radius:6px;cursor:pointer;
+}
+.mobile-links{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.mobile-links a{
+  display:block;font-family:var(--mono);font-size:14px;
+  color:var(--muted);text-decoration:none;padding:.7rem 1rem;
+  border-radius:8px;border:1px solid var(--border);
+  transition:all .18s;
+}
+.mobile-links a:hover,.mobile-links a.active{
+  color:var(--accent);border-color:var(--accent);background:var(--bg);font-weight:600
+}
+
+/* ═══ COMET CANVAS ═══ */
+#comet-canvas{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  opacity:.55;
+}
+
+/* ═══ HERO ═══ */
+#home{
+  min-height:100vh;display:flex;align-items:center;
+  padding:7rem 2.5rem 4rem;max-width:900px;
+  margin:0 auto;gap:3.5rem;position:relative;z-index:1;
+}
+.hero-content{flex:1;display:flex;flex-direction:column}
+.avatar-wrap{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.avatar-circle{
+  width:200px;height:200px;border-radius:50%;
+  border:4px solid var(--avatar-ring);overflow:hidden;display:block;
+  box-shadow:0 0 0 8px var(--blue-soft);
+  transition:border-color .3s,box-shadow .3s;
+}
+.avatar-circle img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:12px;color:var(--accent);
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;
+}
+#home h1{
+  font-size:clamp(2.4rem,5.5vw,4rem);font-weight:300;line-height:1.12;
+  color:var(--blue-deep);letter-spacing:-.02em;margin-bottom:.9rem;
+  transition:color .3s;
+}
+#home h1 span{font-weight:600;color:var(--accent)}
+.status{
+  display:inline-flex;align-items:center;gap:.5em;
+  font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:1.4rem;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#3aad6b;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.hero-about{
+  font-size:.97rem;color:var(--muted);line-height:1.85;
+  margin-bottom:2rem;max-width:520px;
+}
+.hero-about p{margin-bottom:.9rem}
+.hero-about p:last-child{margin-bottom:0}
+.hero-about a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.hero-about a:hover{opacity:.75}
+
+.hero-links{display:flex;gap:.7rem;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:.4em;
+  font-family:var(--mono);font-size:12.5px;font-weight:500;
+  letter-spacing:.04em;padding:.58em 1.25em;border-radius:6px;
+  text-decoration:none;transition:all .2s;cursor:pointer;border:none;
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{filter:brightness(1.12)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--bg-card)}
+.btn-download{background:var(--bg-card);color:var(--accent);border:1px solid var(--accent)}
+.btn-download:hover{background:var(--accent);color:#fff}
+
+/* ═══ MAIN ═══ */
+main{max-width:900px;margin:0 auto;padding:0 2.5rem 6rem;position:relative;z-index:1}
+section{margin-bottom:5.5rem}
+
+/* Section titles — centered, larger */
+.section-title{
+  font-family:var(--mono);font-size:20px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--accent);
+  text-align:center;margin-bottom:2.5rem;
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+}
+.section-title::before,.section-title::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+
+/* ═══ EDUCATION CARDS (horizontal) ═══ */
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.edu-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:14px;padding:1.5rem 1.6rem;
+  transition:background .3s,border-color .3s;
+}
+.edu-degree{font-size:15px;font-weight:600;color:var(--blue-deep);margin-bottom:.35rem}
+.edu-uni{font-size:14px;color:var(--blue-text);margin-bottom:.5rem}
+.edu-meta{display:flex;flex-direction:column;gap:.2rem;margin-bottom:.8rem}
+.edu-meta span{font-size:12.5px;color:var(--muted);font-family:var(--mono)}
+.edu-note{
+  font-size:13px;color:var(--muted);line-height:1.65;
+  padding-top:.7rem;border-top:1px solid var(--border);
+}
+
+/* ═══ INTEREST CARDS (horizontal grid) ═══ */
+.interest-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.interest-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-left:3px solid var(--accent);border-radius:12px;
+  padding:1.3rem 1.4rem;transition:background .3s,border-color .3s;
+}
+.interest-title{
+  font-size:14px;font-weight:600;color:var(--blue-deep);
+  margin-bottom:.55rem;line-height:1.4;
+}
+.interest-body{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* ═══ EXPERIENCE TIMELINE ═══ */
+.timeline{position:relative;padding:0 0 1rem}
+.timeline::before{
+  content:'';position:absolute;left:50%;transform:translateX(-50%);
+  top:0;bottom:0;width:2px;background:var(--border);border-radius:2px;
+}
+.tl-item{
+  position:relative;width:calc(50% - 2rem);margin-bottom:2.5rem;
+}
+.tl-item:nth-child(odd){margin-left:0;margin-right:auto}
+.tl-item:nth-child(even){margin-left:auto;margin-right:0}
+
+/* dot on the line */
+.tl-item::after{
+  content:'';position:absolute;top:1.4rem;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--accent);border:2px solid var(--bg);
+  box-shadow:0 0 0 2px var(--accent);
+}
+.tl-item:nth-child(odd)::after{right:-2.45rem}
+.tl-item:nth-child(even)::after{left:-2.45rem}
+
+.tl-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:12px;padding:1.3rem 1.5rem;
+  transition:background .3s,border-color .3s;
+}
+.tl-role{font-size:15px;font-weight:600;color:var(--blue-deep);margin-bottom:.2rem}
+.tl-org{font-size:12.5px;font-family:var(--mono);color:var(--accent);margin-bottom:.75rem}
+.tl-date{
+  font-size:11px;font-family:var(--mono);color:var(--muted);
+  margin-bottom:.75rem;display:block;
+}
+.tl-list{list-style:none;padding:0}
+.tl-list li{
+  font-size:13px;color:var(--muted);padding-left:1.3em;
+  position:relative;margin-bottom:.3rem;line-height:1.6;
+}
+.tl-list li::before{content:'–';position:absolute;left:0;color:var(--blue-soft)}
+
+/* ═══ PROJECT CARDS ═══ */
+.project-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:12px;padding:1.4rem 1.6rem;margin-bottom:1rem;
+  transition:border-color .2s,box-shadow .2s,background .3s;
+}
+.project-name{font-size:15px;font-weight:600;color:var(--blue-deep);margin-bottom:.3rem}
+.project-where{font-size:12px;font-family:var(--mono);color:var(--accent);margin-bottom:.7rem}
+.project-desc{font-size:13.5px;color:var(--muted);line-height:1.7}
+.project-tech{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.9rem}
+
+/* ═══ SKILLS GRID ═══ */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.skill-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:10px;padding:1.1rem 1.3rem;
+  transition:background .3s,border-color .3s;
+}
+.skill-card-label{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.65rem;
+}
+.skill-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.tag{
+  font-family:var(--mono);font-size:11.5px;
+  background:var(--bg);border:1px solid var(--border);
+  color:var(--blue-text);border-radius:4px;padding:2px 8px;
+  transition:background .3s,border-color .3s,color .3s;
+}
+
+/* ═══ CONTACT ═══ */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.8rem}
+.contact-item{
+  display:flex;align-items:center;gap:.7em;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:8px;padding:.85rem 1rem;
+  text-decoration:none;color:var(--muted);font-size:13px;transition:all .2s;
+}
+.contact-item:hover{border-color:var(--accent);color:var(--accent);background:var(--bg)}
+.contact-label{
+  font-size:11px;font-family:var(--mono);color:var(--accent);
+  letter-spacing:.06em;display:block;line-height:1;margin-bottom:3px;
+}
+.contact-value{font-size:12.5px;color:var(--muted)}
+.contact-item.email-item{cursor:pointer}
+.contact-item.email-item .contact-value{display:flex;align-items:center;gap:.4em}
+.copy-icon{font-size:11px;opacity:.5;transition:opacity .2s;flex-shrink:0}
+.contact-item.email-item:hover .copy-icon{opacity:1}
+
+/* ═══ TILT CARDS ═══ */
+.tilt-card{
+  transform-style:preserve-3d;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s;
+  will-change:transform;cursor:default;
+}
+.tilt-card:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 12px 36px var(--shadow)!important;
+}
+
+/* ═══ CURSOR ═══ */
+.cursor-dot{
+  position:fixed;pointer-events:none;z-index:9999;
+  border-radius:50%;transform:translate(-50%,-50%);
+  transition:width .15s,height .15s,opacity .15s;
+}
+.cursor-dot-inner{width:8px;height:8px;background:var(--accent);opacity:.9}
+.cursor-dot-outer{
+  width:32px;height:32px;border:1.5px solid var(--accent);opacity:.35;
+  transition:width .25s,height .25s,opacity .25s,transform .08s;
+}
+
+/* ═══ COPY TOAST ═══ */
+.copy-toast{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--blue-deep);color:#fff;
+  font-family:var(--mono);font-size:12px;letter-spacing:.05em;
+  padding:.55em 1.4em;border-radius:999px;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s,transform .25s;
+  z-index:9000;white-space:nowrap;
+}
+.copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══ FOOTER ═══ */
+footer{
+  text-align:center;padding:2rem;
+  font-family:var(--mono);font-size:11.5px;
+  color:var(--muted);border-top:1px solid var(--border);
+  letter-spacing:.06em;transition:color .3s,border-color .3s;
+  position:relative;z-index:1;
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:700px){
+  nav{padding:0 1rem}
+  .nav-links-box{display:none}
+  .hamburger{display:flex}
+  .mobile-menu{display:block}
+  #home{
+    flex-direction:column-reverse;align-items:flex-start;
+    padding:5rem 1.2rem 3rem;gap:2rem;min-height:unset;
+  }
+  .avatar-circle{width:130px;height:130px;box-shadow:0 0 0 5px var(--blue-soft)}
+  main{padding:0 1.2rem 4rem}
+  #home h1{font-size:2.3rem}
+  .edu-grid{grid-template-columns:1fr}
+  .interest-grid{grid-template-columns:1fr}
+  .timeline::before{left:12px;transform:none}
+  .tl-item{width:calc(100% - 2.5rem);margin-left:2.5rem!important;margin-right:0!important}
+  .tl-item::after{left:-2rem!important;right:auto!important}
+}
+
+/* ═══ PROJECT HEADER (name + github link row) ═══ */
+.project-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1rem;margin-bottom:.7rem;
+}
+.project-gh-link{
+  display:inline-flex;align-items:center;gap:.35em;
+  font-family:var(--mono);font-size:11.5px;font-weight:500;
+  color:var(--muted);text-decoration:none;
+  border:1px solid var(--border);border-radius:6px;
+  padding:.3em .75em;white-space:nowrap;flex-shrink:0;
+  transition:all .2s;margin-top:.1rem;
+}
+.project-gh-link:hover{
+  color:var(--accent);border-color:var(--accent);
+  background:var(--bg);
+}
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal{
+  opacity:0;
+  transform:translateY(40px);
+  transition:opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1);
+}
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"></div>
+
+<!-- COMET CANVAS -->
+<canvas id="comet-canvas"></canvas>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-panel">
+    <div class="mobile-menu-header">
+      <span style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.08em">NAVIGATE</span>
+      <button class="mobile-close" id="mobileClose">✕</button>
+    </div>
+    <ul class="mobile-links">
+      <li><a href="#home"       onclick="closeMobile()">home</a></li>
+      <li><a href="#education"  onclick="closeMobile()">education</a></li>
+      <li><a href="#interests"  onclick="closeMobile()">interests</a></li>
+      <li><a href="#experience" onclick="closeMobile()">experience</a></li>
+      <li><a href="#projects"   onclick="closeMobile()">projects</a></li>
+      <li><a href="#skills"     onclick="closeMobile()">skills</a></li>
+      <li><a href="#contact"    onclick="closeMobile()">contact</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">🌙</button>
+  <div class="nav-links-box">
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">home</a></li>
+      <li><a href="#education">education</a></li>
+      <li><a href="#interests">interests</a></li>
+      <li><a href="#experience">experience</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
+</nav>
+
+<!-- ═══════ HOME ═══════ -->
+<section id="home">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Sharif University of Technology · Tehran</p>
+    <h1>Mohammadreza<br/><span>Hajibabaei</span></h1>
+    <div class="status"><span class="dot"></span>M.Sc. student · Edge AI research</div>
+
+    <div class="hero-about">
+      <p>I am a Master's student in Electrical Engineering (Digital Systems) at Sharif University of Technology, where I also completed my B.Sc. My research and passion sit firmly at the boundary of Machine Learning and Systems Engineering.</p>
+      <p>Currently, my work focuses on the efficient implementation and inference of Deep Learning models to drastically minimize latency and power consumption. Specifically, I look at intelligent DNN partitioning and resource allocation across TPUs and edge devices.</p>
+      <p>I thrive in the hardware-software co-design space. If you want to collaborate, brainstorm hardware-aware AI, or talk about distributed inference — <em>"Better Call Mohammadreza"</em> and drop me an <a href="#contact">email</a>!</p>
+    </div>
+
+    <div class="hero-links">
+      <a class="btn btn-primary" href="#contact">get in touch</a>
+      <a class="btn btn-download" href="Mohammadreza_Hajibabaei_CV.pdf" download>⬇ download cv</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/mohammadreza-hajibabaei" target="_blank" rel="noopener">linkedin ↗</a>
+      <a class="btn btn-ghost" href="https://github.com/Mohammadreza-Hajibabaei" target="_blank" rel="noopener">github ↗</a>
+    </div>
+  </div>
+
+  <div class="avatar-wrap">
+    <div class="avatar-circle">
+      <img src="avatar.jpg" alt="Mohammadreza Hajibabaei"
+        onerror="this.parentElement.style.background='var(--blue-soft)';this.style.display='none'"/>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<!-- ═══════ EDUCATION ═══════ -->
+<section id="education">
+  <p class="section-title">Education</p>
+  <div class="edu-grid">
+
+    <div class="edu-card tilt-card">
+      <div class="edu-degree">M.Sc. in Electrical Engineering — Digital Systems</div>
+      <div class="edu-uni">Sharif University of Technology</div>
+      <div class="edu-meta">
+        <span>📍 Tehran, Iran</span>
+        <span>📅 2024 — present</span>
+      </div>
+      <div class="edu-note">Admitted without national entrance exam, top 30% of B.Sc. cohort based on academic excellence.</div>
+    </div>
+
+    <div class="edu-card tilt-card">
+      <div class="edu-degree">B.Sc. in Electrical Engineering</div>
+      <div class="edu-uni">Sharif University of Technology</div>
+      <div class="edu-meta">
+        <span>📍 Tehran, Iran</span>
+        <span>📅 2020 — 2024</span>
+      </div>
+      <div class="edu-note">Coursework: Machine Learning, ASIC/FPGA Design, FPGA Systems Lab, AI &amp; Biological Computation, Data Structures, Parallel Programming &amp; Architecture.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════ INTERESTS ═══════ -->
+<section id="interests">
+  <p class="section-title">Interests</p>
+  <div class="interest-grid">
+
+    <div class="interest-card tilt-card">
+      <div class="interest-title">🌐 Edge Intelligence &amp; Distributed DNNs</div>
+      <div class="interest-body">Optimizing distributed deep learning inference via model parallelization and smart scheduling on edge clusters.</div>
+    </div>
+
+    <div class="interest-card tilt-card">
+      <div class="interest-title">⚡ Algorithmic Efficiency &amp; Optimization</div>
+      <div class="interest-body">Applying convex optimization, mathematical modeling, and heuristic resource allocation to reduce deep learning latency and power envelopes.</div>
+    </div>
+
+    <div class="interest-card tilt-card">
+      <div class="interest-title">🤖 LLM Engineering &amp; Intelligent Agents</div>
+      <div class="interest-body">Designing context-aware conversational agents, exploring parameter-efficient fine-tuning (PEFT), and integrating memory-based structures and vector databases (RAG).</div>
+    </div>
+
+    <div class="interest-card tilt-card">
+      <div class="interest-title">🔌 Embedded AI Acceleration</div>
+      <div class="interest-body">Mapping high-throughput signal processing pipelines and neural architectures onto specialized hardware like FPGAs and custom accelerators.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════ EXPERIENCE ═══════ -->
+<section id="experience">
+  <p class="section-title">Experience</p>
+  <div class="timeline">
+
+    <!-- Item 1 — LEFT -->
+    <div class="tl-item">
+      <div class="tl-card tilt-card">
+        <div class="tl-role">M.Sc. Thesis Research</div>
+        <div class="tl-org">Sharif University of Technology</div>
+        <span class="tl-date">📅 Sept 2025 — Present</span>
+        <ul class="tl-list">
+          <li>Title: Efficient Allocation of Edge Computing Resources for Pipelined Execution of Deep Learning Models</li>
+          <li>Advisor: Prof. Hamed Shah-Mansouri</li>
+          <li>Designed and investigated intelligent DNN partitioning frameworks across TPUs and edge devices to optimize end-to-end latency and resource efficiency.</li>
+          <li>Focused on improving the throughput of deep learning inference in distributed environments using multi-objective resource optimization.</li>
+          <li>Awarded a competitive research grant for TPU-based edge AI system design from the Sharif University Research &amp; Technology Vice-Presidency.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Item 2 — RIGHT -->
+    <div class="tl-item">
+      <div class="tl-card tilt-card">
+        <div class="tl-role">Undergraduate Research Assistant</div>
+        <div class="tl-org">ACL Lab (Prof. Bagheri), Sharif University of Technology</div>
+        <span class="tl-date">📅 Sept 2023 — Aug 2024</span>
+        <ul class="tl-list">
+          <li>Collaborated closely with graduate researchers on machine learning-based audio analysis and processing projects.</li>
+          <li>Contributed to context-aware audio annotation and classification tasks, gaining hands-on experience in pipeline model training, feature extraction, and evaluation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Item 3 — LEFT -->
+    <div class="tl-item">
+      <div class="tl-card tilt-card">
+        <div class="tl-role">Research Intern</div>
+        <div class="tl-org">Kavoshcom Company</div>
+        <span class="tl-date">📅 June 2023 — Aug 2023</span>
+        <ul class="tl-list">
+          <li>Developed and evaluated machine learning algorithms tailored for the classification of ECG signals and real-time detection of cardiac arrhythmias.</li>
+          <li>Applied advanced signal preprocessing, feature extraction, and supervised learning techniques to significantly improve diagnostic accuracy.</li>
+          <li>Tools: Python, scikit-learn, NumPy, Keras</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════ PROJECTS ═══════ -->
+<section id="projects">
+  <p class="section-title">Projects</p>
+
+  <div class="project-card tilt-card">
+    <div class="project-header">
+      <div>
+        <div class="project-name">AI Chatbot with RAG &amp; Function Calling</div>
+        <div class="project-where">Sharif University · Deep Learning Course, Spring 2025</div>
+      </div>
+      <a class="project-gh-link" href="https://github.com/Mohammadreza-Hajibabaei/Deep-Learning-project" target="_blank" rel="noopener" title="View on GitHub">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        <span>github ↗</span>
+      </a>
+    </div>
+    <p class="project-desc">Intelligent conversational AI agent with real-time reasoning, web-integrated responses, and memory-based dialogue management using Retrieval-Augmented Generation. Implemented document understanding, a 20-Questions game, and GUI testing via Gradio.</p>
+    <div class="project-tech">
+      <span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">Transformers</span>
+      <span class="tag">FAISS</span><span class="tag">RAG</span><span class="tag">Gradio</span><span class="tag">PyMuPDF</span>
+    </div>
+  </div>
+
+  <div class="project-card tilt-card">
+    <div class="project-header">
+      <div>
+        <div class="project-name">FPGA-Based Signal Processing System (Zynq Platform)</div>
+        <div class="project-where">Sharif University · Spring 2024</div>
+      </div>
+      <a class="project-gh-link" href="https://github.com/Mohammadreza-Hajibabaei/FPGA-Project" target="_blank" rel="noopener" title="View on GitHub">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        <span>github ↗</span>
+      </a>
+    </div>
+    <p class="project-desc">Real-time signal processing system on a Zynq SoC (PS+PL). Implemented waveform generation, FFT visualization on HDMI, and a scrambler/descrambler link following the DVB-S2 standard. Demonstrated advanced FPGA design using AXI DMA, FFT IP, and HDMI controllers.</p>
+    <div class="project-tech">
+      <span class="tag">Verilog</span><span class="tag">Vivado</span><span class="tag">Zynq SoC</span>
+      <span class="tag">AXI DMA</span><span class="tag">FFT IP</span><span class="tag">DVB-S2</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SKILLS ═══════ -->
+<section id="skills">
+  <p class="section-title">Skills</p>
+  <div class="skills-grid">
+    <div class="skill-card tilt-card">
+      <div class="skill-card-label">Languages</div>
+      <div class="skill-tags">
+        <span class="tag">Python</span><span class="tag">C/C++</span><span class="tag">Verilog</span><span class="tag">Java</span>
+      </div>
+    </div>
+    <div class="skill-card tilt-card">
+      <div class="skill-card-label">ML / Data</div>
+      <div class="skill-tags">
+        <span class="tag">PyTorch</span><span class="tag">TensorFlow</span><span class="tag">Scikit-learn</span><span class="tag">NumPy</span><span class="tag">Pandas</span>
+      </div>
+    </div>
+    <div class="skill-card tilt-card">
+      <div class="skill-card-label">Hardware</div>
+      <div class="skill-tags">
+        <span class="tag">Vivado</span><span class="tag">Xilinx ISE</span><span class="tag">Quartus</span><span class="tag">ModelSim</span>
+      </div>
+    </div>
+    <div class="skill-card tilt-card">
+      <div class="skill-card-label">Tools</div>
+      <div class="skill-tags">
+        <span class="tag">MATLAB</span><span class="tag">OMNeT++</span><span class="tag">PySpark</span><span class="tag">CUDA</span><span class="tag">Git</span><span class="tag">OpenAI</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CONTACT ═══════ -->
+<section id="contact">
+  <p class="section-title">Contact</p>
+  <div class="contact-grid">
+
+    <div class="contact-item email-item tilt-card" data-email="mreza.hajibabaei28@sharif.edu" role="button" tabindex="0" aria-label="Copy Sharif email">
+      <div>
+        <span class="contact-label">sharif email</span>
+        <span class="contact-value">mreza.hajibabaei28@sharif.edu <span class="copy-icon">⧉</span></span>
+      </div>
+    </div>
+
+    <div class="contact-item email-item tilt-card" data-email="mr.hajibabaei02@gmail.com" role="button" tabindex="0" aria-label="Copy Gmail address">
+      <div>
+        <span class="contact-label">gmail</span>
+        <span class="contact-value">mr.hajibabaei02@gmail.com <span class="copy-icon">⧉</span></span>
+      </div>
+    </div>
+
+    <a class="contact-item tilt-card" href="https://telegram.me/MoReza_H" target="_blank" rel="noopener">
+      <div>
+        <span class="contact-label">telegram</span>
+        <span class="contact-value">@MoReza_H</span>
+      </div>
+    </a>
+
+    <a class="contact-item tilt-card" href="https://linkedin.com/in/mohammadreza-hajibabaei" target="_blank" rel="noopener">
+      <div>
+        <span class="contact-label">linkedin</span>
+        <span class="contact-value">mohammadreza-hajibabaei</span>
+      </div>
+    </a>
+
+    <a class="contact-item tilt-card" href="https://github.com/Mohammadreza-Hajibabaei" target="_blank" rel="noopener">
+      <div>
+        <span class="contact-label">github</span>
+        <span class="contact-value">view repositories</span>
+      </div>
+    </a>
+
+    <div class="contact-item" style="cursor:default">
+      <div>
+        <span class="contact-label">location</span>
+        <span class="contact-value">Tehran, Iran</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer><p>© 2025 Mohammadreza Hajibabaei &nbsp;·&nbsp; built with care</p></footer>
+
+<!-- CURSOR ELEMENTS -->
+<div class="cursor-dot cursor-dot-outer" id="cursorOuter"></div>
+<div class="cursor-dot cursor-dot-inner" id="cursorInner"></div>
+<div class="copy-toast" id="copyToast"></div>
+
+<script>
+/* ══════════════════════════════════
+   THEME
+══════════════════════════════════ */
+const themeBtn = document.getElementById('themeBtn');
+if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');themeBtn.textContent='☀️'}
+themeBtn.addEventListener('click',()=>{
+  const d=document.body.classList.toggle('dark');
+  themeBtn.textContent=d?'☀️':'🌙';
+  localStorage.setItem('theme',d?'dark':'light');
+});
+
+/* ══════════════════════════════════
+   HAMBURGER / MOBILE MENU
+══════════════════════════════════ */
+const mobileMenu=document.getElementById('mobileMenu');
+document.getElementById('hamburger').addEventListener('click',()=>{
+  mobileMenu.style.display='block';
+  requestAnimationFrame(()=>mobileMenu.classList.add('open'));
+});
+document.getElementById('mobileClose').addEventListener('click',closeMobile);
+mobileMenu.addEventListener('click',e=>{if(e.target===mobileMenu)closeMobile()});
+function closeMobile(){
+  mobileMenu.classList.remove('open');
+  setTimeout(()=>mobileMenu.style.display='none',280);
+}
+
+/* ══════════════════════════════════
+   SCROLL PROGRESS BAR
+══════════════════════════════════ */
+const bar=document.getElementById('progress-bar');
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100;
+  bar.style.width=Math.min(pct,100)+'%';
+},{ passive:true });
+
+/* ══════════════════════════════════
+   ACTIVE NAV LINK ON SCROLL
+══════════════════════════════════ */
+const sections=document.querySelectorAll('section[id], #home');
+const allNavLinks=document.querySelectorAll('.nav-links a, .mobile-links a');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      allNavLinks.forEach(a=>a.classList.remove('active'));
+      document.querySelectorAll(`a[href="#${e.target.id}"]`).forEach(a=>a.classList.add('active'));
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>observer.observe(s));
+
+/* ══════════════════════════════════
+   COMET CANVAS
+══════════════════════════════════ */
+(function(){
+  const canvas=document.getElementById('comet-canvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+  resize();
+  window.addEventListener('resize',resize);
+
+  const COMETS=7;
+  function rnd(a,b){return a+Math.random()*(b-a)}
+  function makeComet(){
+    return{
+      x:rnd(-200,-40),
+      y:rnd(0,window.innerHeight),
+      vx:rnd(0.7,1.8),
+      vy:rnd(-0.15,0.15),
+      len:rnd(60,150),
+      r:rnd(1.2,2.4),
+      alpha:rnd(.55,.95),
+      speed:rnd(0.7,1.8),
+    };
+  }
+  const comets=Array.from({length:COMETS},makeComet);
+  // stagger starts
+  comets.forEach((c,i)=>{c.x=rnd(-300,window.innerWidth*.6); c.y=rnd(0,window.innerHeight)});
+
+  function getAccent(){
+    return getComputedStyle(document.documentElement).getPropertyValue('--blue-mid').trim()||'#5b9bd5';
+  }
+
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const col=getAccent();
+    comets.forEach(c=>{
+      // draw comet tail
+      const grad=ctx.createLinearGradient(c.x-c.len,c.y,c.x,c.y);
+      grad.addColorStop(0,'transparent');
+      grad.addColorStop(1,col);
+      ctx.beginPath();
+      ctx.moveTo(c.x-c.len,c.y);
+      ctx.lineTo(c.x,c.y);
+      ctx.strokeStyle=grad;
+      ctx.lineWidth=c.r*0.7;
+      ctx.globalAlpha=c.alpha*0.5;
+      ctx.stroke();
+      // draw head dot
+      ctx.beginPath();
+      ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+      ctx.fillStyle=col;
+      ctx.globalAlpha=c.alpha;
+      ctx.fill();
+      ctx.globalAlpha=1;
+      // move
+      c.x+=c.vx*c.speed;
+      c.y+=c.vy*c.speed;
+      // reset when off right edge
+      if(c.x-c.len>canvas.width+50){
+        Object.assign(c,makeComet());
+        c.x=-c.len-10;
+        c.y=rnd(0,window.innerHeight);
+      }
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ══════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════ */
+const outer=document.getElementById('cursorOuter');
+const inner=document.getElementById('cursorInner');
+let mx=-200,my=-200,ox=-200,oy=-200;
+if(!window.matchMedia('(hover:none)').matches){
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    inner.style.left=mx+'px';inner.style.top=my+'px';
+  });
+  (function loop(){
+    ox+=(mx-ox)*.18;oy+=(my-oy)*.18;
+    outer.style.left=ox+'px';outer.style.top=oy+'px';
+    requestAnimationFrame(loop);
+  })();
+  const hq='a,button,.tilt-card,.email-item';
+  document.addEventListener('mouseover',e=>{
+    if(e.target.closest(hq)){
+      outer.style.width='52px';outer.style.height='52px';outer.style.opacity='.55';
+      inner.style.width='6px';inner.style.height='6px';
+    }
+  });
+  document.addEventListener('mouseout',e=>{
+    if(e.target.closest(hq)){
+      outer.style.width='32px';outer.style.height='32px';outer.style.opacity='.35';
+      inner.style.width='8px';inner.style.height='8px';
+    }
+  });
+}else{outer.style.display='none';inner.style.display='none'}
+
+/* ══════════════════════════════════
+   TILT CARDS
+══════════════════════════════════ */
+document.querySelectorAll('.tilt-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=e.clientX-r.left-r.width/2;
+    const y=e.clientY-r.top-r.height/2;
+    card.style.transform=`perspective(600px) rotateX(${-(y/(r.height/2))*7}deg) rotateY(${(x/(r.width/2))*7}deg) scale(1.04)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='perspective(600px) rotateX(0) rotateY(0) scale(1)'});
+});
+
+/* ══════════════════════════════════
+   EMAIL COPY + TOAST
+══════════════════════════════════ */
+const toast=document.getElementById('copyToast');
+let tt;
+function showToast(m){toast.textContent=m;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('show'),2500)}
+document.querySelectorAll('.email-item').forEach(el=>{
+  const email=el.dataset.email;
+  el.addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText(email);showToast('✓ Copied: '+email)}
+    catch{window.location.href='mailto:'+email}
+  });
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click()}});
+  el.addEventListener('contextmenu',e=>{e.preventDefault();window.location.href='mailto:'+email});
+});
+
+/* ══════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════ */
+(function(){
+  // Tag every card-like element for reveal
+  const sel = [
+    '.edu-card','.interest-card','.tl-card',
+    '.project-card','.skill-card','.contact-item',
+    '.hero-about p',
+  ].join(',');
+
+  const els = document.querySelectorAll(sel);
+  els.forEach(el => el.classList.add('reveal'));
+
+  const ro = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if(e.isIntersecting){
+        // slight stagger for sibling cards
+        const siblings = Array.from(e.target.parentElement.children).filter(c=>c.classList.contains('reveal'));
+        const idx = siblings.indexOf(e.target);
+        e.target.style.transitionDelay = (idx * 80) + 'ms';
+        e.target.classList.add('visible');
+        ro.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  els.forEach(el => ro.observe(el));
+})();
+
+</script>
+</body>
+</html>
