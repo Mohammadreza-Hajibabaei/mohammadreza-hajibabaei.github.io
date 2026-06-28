@@ -745,8 +745,12 @@ themeBtn.addEventListener('click',()=>{
 ══════════════════════════════════ */
 const mobileMenu=document.getElementById('mobileMenu');
 document.getElementById('hamburger').addEventListener('click',()=>{
-  mobileMenu.style.display='block';
-  requestAnimationFrame(()=>mobileMenu.classList.add('open'));
+  if(mobileMenu.classList.contains('open')){
+    closeMobile();
+  } else {
+    mobileMenu.style.display='block';
+    requestAnimationFrame(()=>mobileMenu.classList.add('open'));
+  }
 });
 document.getElementById('mobileClose').addEventListener('click',closeMobile);
 mobileMenu.addEventListener('click',e=>{if(e.target===mobileMenu)closeMobile()});
@@ -931,6 +935,8 @@ document.querySelectorAll('.email-item').forEach(el=>{
         e.target.style.transitionDelay = (idx * 80) + 'ms';
         e.target.classList.add('visible');
         ro.unobserve(e.target);
+        // Clear delay after animation so tilt hover is never sluggish
+        setTimeout(() => { e.target.style.transitionDelay = '0ms'; }, (idx * 80) + 650);
       }
     });
   }, { threshold: 0.12 });
